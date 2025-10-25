@@ -91,6 +91,9 @@ mark_as_advanced(COMPILER_RT_SCUDO_STANDALONE_BUILD_SHARED)
 option(COMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC "Build SCUDO standalone with LLVM's libc headers" OFF)
 mark_as_advanced(COMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC)
 
+option(COMPILER_RT_ASAN_TEST_LTO "Set to 'lto' or 'thinlto' to run ASAN tests with LTO" "")
+option(COMPILER_RT_TSAN_TEST_LTO "Set to 'lto' or 'thinlto' to run TSAN tests with LTO" "")
+
 if(FUCHSIA)
   set(COMPILER_RT_HWASAN_WITH_INTERCEPTORS_DEFAULT OFF)
 else()

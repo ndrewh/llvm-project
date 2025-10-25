@@ -99,6 +99,7 @@ if(APPLE)
       set(TSAN_TEST_APPLE_PLATFORM "${platform}")
       set(TSAN_TEST_TARGET_ARCH "${arch}")
       set(TSAN_TEST_MIN_DEPLOYMENT_TARGET_FLAG "${DARWIN_${platform}_MIN_VER_FLAG}")
+      set(TSAN_TEST_LTO "${COMPILER_RT_TSAN_TEST_LTO}")
       configure_lit_site_cfg(
         ${CMAKE_CURRENT_SOURCE_DIR}/lit.site.cfg.py.in
         ${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_NAME}/lit.site.cfg.py

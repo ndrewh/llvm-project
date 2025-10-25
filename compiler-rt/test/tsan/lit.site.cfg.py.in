@@ -8,6 +8,8 @@ config.apple_platform_min_deployment_target_flag = "@TSAN_TEST_MIN_DEPLOYMENT_TA
 config.target_cflags = "@TSAN_TEST_TARGET_CFLAGS@"
 config.target_arch = "@TSAN_TEST_TARGET_ARCH@"
 config.deflake_threshold = "@TSAN_TEST_DEFLAKE_THRESHOLD@"
+config.use_lto = ("@TSAN_TEST_LTO@" in ["lto", "thinlto"])
+config.use_thinlto = ("@TSAN_TEST_LTO@" == "thinlto")
 
 # Load common config for all compiler-rt lit tests.
 lit_config.load_config(config, "@COMPILER_RT_BINARY_DIR@/test/lit.common.configured")
