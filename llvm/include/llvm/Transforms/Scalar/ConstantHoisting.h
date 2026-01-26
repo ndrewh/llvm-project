@@ -196,6 +196,7 @@ private:
   // If BaseGV is nullptr, find base among Constant Integer candidates;
   // otherwise find base among constant GEPs sharing BaseGV as base pointer.
   void findBaseConstants(GlobalVariable *BaseGV);
+  bool isPossibleConstantCast(Instruction *inst) const;
 
   /// A ConstantUser grouped with the Type and Constant adjustment. The user
   /// will be adjusted by Offset.

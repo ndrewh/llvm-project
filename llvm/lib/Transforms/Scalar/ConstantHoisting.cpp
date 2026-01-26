@@ -158,6 +158,14 @@ bool ConstantHoistingLegacyPass::runOnFunction(Function &Fn) {
   return MadeChange;
 }
 
+bool ConstantHoistingPass::isPossibleConstantCast(Instruction *Inst) const {
+  // XXX: It seems like the only casts that this pass could replace are
+  // inttoptr, since they are the only cast whose operand is a integer. This
+  // assumption hasn't been made explicit anywhere, so continue to use isCast()
+  // and just exclude specific casts.
+  return Inst->isCast() && Inst->getOpcode() != Instruction::AddrSpaceCast;
+}
+
 void ConstantHoistingPass::collectMatInsertPts(
     const RebasedConstantListType &RebasedConstants,
     SmallVectorImpl<BasicBlock::iterator> &MatInsertPts) const {
@@ -174,7 +182,7 @@ BasicBlock::iterator ConstantHoistingPass::findMatInsertPt(Instruction *Inst,
   if (Idx != ~0U) {
     Value *Opnd = Inst->getOperand(Idx);
     if (auto CastInst = dyn_cast<Instruction>(Opnd))
-      if (CastInst->isCast())
+      if (isPossibleConstantCast(CastInst))
         return CastInst->getIterator();
   }
 
@@ -463,7 +471,7 @@ void ConstantHoistingPass::collectConstantCandidates(
   if (auto CastInst = dyn_cast<Instruction>(Opnd)) {
     // Only visit cast instructions, which have been skipped. All other
     // instructions should have already been visited.
-    if (!CastInst->isCast())
+    if (!isPossibleConstantCast(CastInst))
       return;
 
     if (auto *ConstInt = dyn_cast<ConstantInt>(CastInst->getOperand(0))) {
@@ -498,7 +506,7 @@ void ConstantHoistingPass::collectConstantCandidates(
 void ConstantHoistingPass::collectConstantCandidates(
     ConstCandMapType &ConstCandMap, Instruction *Inst) {
   // Skip all cast instructions. They are visited indirectly later on.
-  if (Inst->isCast())
+  if (isPossibleConstantCast(Inst))
     return;
 
   // Scan all operands.
@@ -766,7 +774,7 @@ void ConstantHoistingPass::emitBaseConstants(Instruction *Base,
 
   // Visit cast instruction.
   if (auto CastInst = dyn_cast<Instruction>(Opnd)) {
-    assert(CastInst->isCast() && "Expected an cast instruction!");
+    assert(isPossibleConstantCast(CastInst) && "Expected an cast instruction!");
     // Check if we already have visited this cast instruction before to avoid
     // unnecessary cloning.
     Instruction *&ClonedCastInst = ClonedCastMap[CastInst];
