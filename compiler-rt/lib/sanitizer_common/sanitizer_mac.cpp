@@ -28,6 +28,7 @@
     ((SANITIZER_WORDSIZE == 32) ? 0x000000001000 : 0x000100000000)
 
 #  include "sanitizer_common.h"
+#  include "sanitizer_mac_crashreport.h"
 #  include "sanitizer_file.h"
 #  include "sanitizer_flags.h"
 #  include "sanitizer_interface_internal.h"
@@ -978,6 +979,7 @@ void InitializePlatformEarly() {
   MonotonicNanoTime();  // Call to initialize mach_timebase_info
   VerifyInterceptorsWorking();
   StripEnv();
+  InitDarwinReportReceiver();
 #  endif
 }
 

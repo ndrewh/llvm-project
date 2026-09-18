@@ -17,6 +17,7 @@ set(SANITIZER_SOURCES_NOTERMINATION
   sanitizer_linux.cpp
   sanitizer_linux_s390.cpp
   sanitizer_mac.cpp
+  sanitizer_mac_crashreport.cpp
   sanitizer_mutex.cpp
   sanitizer_netbsd.cpp
   sanitizer_platform_limits_freebsd.cpp
@@ -169,6 +170,7 @@ set(SANITIZER_IMPL_HEADERS
   sanitizer_local_address_space_view.h
   sanitizer_lzw.h
   sanitizer_mac.h
+  sanitizer_mac_crashreport.h
   sanitizer_malloc_mac.inc
   sanitizer_mutex.h
   sanitizer_new_handler.h
